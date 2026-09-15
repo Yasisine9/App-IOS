@@ -29,9 +29,8 @@ Built in **SwiftUI + CoreBluetooth**. No third-party dependencies.
 
 ## Requirements
 
-- **iPhone running iOS 17 or later.** CoreBluetooth does not work in the Simulator,
+- **iPhone running iOS 16 or later.** CoreBluetooth does not work in the Simulator,
   so a physical device is required — both to build and to use.
-- **Xcode 16 or later** to build.
 - **A Bruce device with the BLE API enabled** (see below). Developed and tested
   against a **LilyGo T-Embed CC1101**; anything running Bruce with the BLE API and
   the serial command parser should work.
@@ -43,29 +42,8 @@ Built in **SwiftUI + CoreBluetooth**. No third-party dependencies.
 On the device, go to **Config → Advanced → Toggle BLE API**. It is **off by default**,
 and nothing in the app will find your Bruce until you turn it on.
 
-### 2. Build and install
-
-```sh
-git clone https://github.com/BruceDevices/App-IOS.git
-cd App-IOS
-open "Bruce Remote.xcodeproj"
-```
-
-Signing is per-developer, so no team ID is committed. Set yours once:
-
-```sh
-cp Config/Local.xcconfig.example Config/Local.xcconfig
-# then edit BRUCE_DEVELOPMENT_TEAM (and BRUCE_BUNDLE_ID if you need to)
-```
-
-`Config/Local.xcconfig` is git-ignored, so your identity never lands in a diff. Skip it
-if you prefer and just pick a team in **Signing & Capabilities** — the project builds
-either way. Then build to your iPhone.
-
-> A free Apple ID works: apps signed with a personal team expire after 7 days and
-> need a rebuild. A paid Apple Developer account raises that to a year. If a free
-> Apple ID rejects the default bundle identifier, set `BRUCE_BUNDLE_ID` to something
-> of your own.
+### 2.Install
+Install the .IPA file via sideloading tools (**LiveContainer**, **SideStore**, **AltStore** ...)
 
 ### 3. Connect
 
