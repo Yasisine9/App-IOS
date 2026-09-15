@@ -1,0 +1,43 @@
+name: Build Swift Bruce Remote IPA
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configuration de l'environnement Xcode
+        run: |
+          mkdir -p Config
+          echo "BRUCE_DEVELOPMENT_TEAM = ''" > Config/Local.xcconfig
+          echo "BRUCE_BUNDLE_ID = com.brucedevices.bruceremote" >> Config/Local.xcconfig
+
+      - name: Compilation avec xcodebuild
+        run: |
+          xcodebuild build \
+            -project "Bruce Remote.xcodeproj" \
+            -scheme "Bruce Remote" \
+            -sdk iphoneos \
+            -configuration Release \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY="" \
+            BUILD_DIR=build
+
+      - name: Création du paquet IPA
+        run: |
+          mkdir -p build/Payload
+          mv build/Release-iphoneos/*.app build/Payload/
+          cd build
+          zip -r BruceRemote.ipa Payload
+
+      - name: Télécharger le fichier IPA
+        uses: actions/upload-artifact@v4
+        with:
+          name: BruceRemote-Swift-IPA
+          path: build/BruceRemote.ipa
